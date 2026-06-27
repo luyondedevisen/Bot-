@@ -1,0 +1,19 @@
+{
+  "name": "market-structure-bot",
+  "version": "1.0.0",
+  "description": "Polls EURUSD and BTCUSD, detects break-of-structure signals, emails alerts, serves a dashboard.",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "resend": "^4.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

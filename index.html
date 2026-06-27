@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Structure Watch — EURUSD · BTCUSD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d0e;
+    --bg-raised: #121517;
+    --line: #232826;
+    --text: #e8e6e1;
+    --text-dim: #8a8d89;
+    --text-faint: #54564f;
+    --bullish: #3ddc84;
+    --bearish: #ff5c5c;
+    --neutral: #d4a24c;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  a { color: inherit; }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    gap: 16px;
+  }
+
+  .title-block .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 6px;
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .meta {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .status-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--bullish);
+    margin-right: 6px;
+    box-shadow: 0 0 8px var(--bullish);
+  }
+  .status-dot.offline {
+    background: var(--bearish);
+    box-shadow: 0 0 8px var(--bearish);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; }
+    header { flex-direction: column; }
+    .meta { text-align: left; }
+  }
+
+  .ticket {
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ticket-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+
+  .symbol {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+  }
+
+  .price {
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--text-dim);
+  }
+
+  .trend-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 14px 0 16px;
+  }
+
+  .trend-word {
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+  .trend-word.up { color: var(--bullish); }
+  .trend-word.down { color: var(--bearish); }
+  .trend-word.none { color: var(--neutral); }
+
+  .trend-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+  }
+
+  .sparkline {
+    width: 100%;
+    height: 48px;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .divider {
+    border-top: 1px solid var(--line);
+    margin: 16px 0 12px;
+  }
+
+  .log-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+  }
+
+  .log {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  .log-entry {
+    display: grid;
+    grid-template-columns: 14px 1fr auto;
+    gap: 8px;
+    align-items: baseline;
+    font-size: 12.5px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .log-entry:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .log-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-top: 4px;
+  }
+  .log-dot.bullish { background: var(--bullish); }
+  .log-dot.bearish { background: var(--bearish); }
+
+  .log-type {
+    font-family: var(--mono);
+    font-weight: 600;
+  }
+  .log-type.bullish { color: var(--bullish); }
+  .log-type.bearish { color: var(--bearish); }
+
+  .log-note {
+    color: var(--text-dim);
+    font-size: 11.5px;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .log-time {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    white-space: nowrap;
+  }
+
+  .empty-state {
+    color: var(--text-faint);
+    font-size: 12.5px;
+    font-style: normal;
+    padding: 6px 0;
+  }
+
+  .error-banner {
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--bearish);
+    background: rgba(255, 92, 92, 0.08);
+    border: 1px solid rgba(255, 92, 92, 0.25);
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+
+  footer {
+    margin-top: 36px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    line-height: 1.7;
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+  }
+
+  .config-banner {
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .config-banner code {
+    color: var(--neutral);
+    background: rgba(212, 162, 76, 0.1);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title-block">
+        <div class="eyebrow">Market Structure</div>
+        <h1>EURUSD · BTCUSD Watch</h1>
+      </div>
+      <div class="meta" id="meta">
+        <span><span class="status-dot" id="statusDot"></span><span id="statusText">connecting…</span></span><br/>
+        <span id="serverTime">—</span>
+      </div>
+    </header>
+
+    <div class="config-banner" id="configBanner" style="display:none;">
+      Couldn't reach the bot's API. Make sure the server is running (see README) — if you're viewing this
+      file directly instead of via the running server, start the server first and open its URL instead.
+    </div>
+
+    <div class="grid" id="grid">
+      <!-- Tickets injected by app.js -->
+    </div>
+
+    <footer>
+      Checks EUR/USD and BTC/USD every few minutes for break-of-structure (BOS) and change-of-character (CHoCH)
+      events. Educational tool only — not financial advice. Verify on your own chart before acting on any signal.
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
